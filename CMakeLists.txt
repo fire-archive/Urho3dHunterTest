@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.2.3)
-
 include("cmake/HunterGate.cmake")
-
 # If Hunter is cloned this line will not
 # be used if fact. See 'testing' section for me info
 HunterGate(
@@ -9,7 +7,6 @@ HunterGate(
     SHA1 "2d444140db0d53393b5490604006bb4f4896a444"
     LOCAL
 )
-
 if (COMMAND cmake_policy)
     cmake_policy (SET CMP0003 NEW)
     if (CMAKE_VERSION VERSION_GREATER 2.8.12 OR CMAKE_VERSION VERSION_EQUAL 2.8.12)
@@ -23,10 +20,8 @@ if (COMMAND cmake_policy)
         cmake_policy (SET CMP0042 NEW)
     endif ()
 endif ()
-
 project(UrhoHunterTest)
 hunter_add_package(Urho3D)
-
 #file(READ "${URHO3D_LICENSE}" urho3d_license_content)
 #set(project_license ${CMAKE_BINARY_DIR}/LICENSE.md)
 #file(
@@ -36,21 +31,17 @@ hunter_add_package(Urho3D)
 #  "${urho3d_license_content}"
 #)
 #install(FILES ${project_license} DESTINATION .)
-
-message("Project license: ${project_license}")
-
+#message("Project license: ${project_license}")
 if(WIN32)
   set(CMAKE_MODULE_PATH ${URHO3D_ROOT}/share/CMake/Modules;${CMAKE_MODULE_PATH})
 else()
   set(CMAKE_MODULE_PATH ${URHO3D_ROOT}/share/Urho3D/CMake/Modules;${CMAKE_MODULE_PATH})
 endif()
 include(Urho3D-CMake-common)
-
 if(${URHO3D_LIB_TYPE} STREQUAL SHARED AND NOT WIN32)
  set(CMAKE_INSTALL_RPATH "../lib/Urho3D")
  install(DIRECTORY "${URHO3D_ROOT}/lib/Urho3D" DESTINATION lib)
 endif()
-
 if(WIN32)
   install(DIRECTORY "${URHO3D_ROOT}/share/Resources/CoreData" DESTINATION bin)
   install(DIRECTORY "${URHO3D_ROOT}/share/Resources/Data" DESTINATION bin)
@@ -58,6 +49,5 @@ else()
   install(DIRECTORY "${URHO3D_ROOT}/share/Urho3D/Resources/CoreData" DESTINATION bin)
   install(DIRECTORY "${URHO3D_ROOT}/share/Urho3D/Resources/Data" DESTINATION bin)
 endif()
-
 add_subdirectory(20_HugeObjectCount)
 
