@@ -7,6 +7,7 @@ include("cmake/HunterGate.cmake")
 HunterGate(
     URL "https://github.com/ruslo/hunter/archive/v0.14.12.tar.gz"
     SHA1 "2d444140db0d53393b5490604006bb4f4896a444"
+    LOCAL
 )
 
 if (COMMAND cmake_policy)
@@ -24,22 +25,34 @@ if (COMMAND cmake_policy)
 endif ()
 
 project(UrhoHunterTest)
-
 hunter_add_package(Urho3D)
 
+#file(READ "${URHO3D_LICENSE}" urho3d_license_content)
+#set(project_license ${CMAKE_BINARY_DIR}/LICENSE.md)
+#file(
+#  WRITE
+#  "${project_license}"
+#  "## Urho3D\n\n"
+#  "${urho3d_license_content}"
+#)
+
+message("Project license: ${project_license}")
+
 if(WIN32)
-set(CMAKE_MODULE_PATH ${URHO3D_ROOT}/share/CMake/Modules;${CMAKE_MODULE_PATH})
+  set(CMAKE_MODULE_PATH ${URHO3D_ROOT}/share/CMake/Modules;${CMAKE_MODULE_PATH})
 else()
-set(CMAKE_MODULE_PATH ${URHO3D_ROOT}/share/Urho3D/CMake/Modules;${CMAKE_MODULE_PATH})
+  set(CMAKE_MODULE_PATH ${URHO3D_ROOT}/share/Urho3D/CMake/Modules;${CMAKE_MODULE_PATH})
 endif()
 include(Urho3D-CMake-common)
 add_subdirectory(20_HugeObjectCount)
 
+#install(FILES ${project_license} DESTINATION .)
+
 if(WIN32)
-INSTALL( DIRECTORY "${URHO3D_ROOT}/share/Resources/CoreData" DESTINATION bin )
-INSTALL( DIRECTORY "${URHO3D_ROOT}/share/Resources/Data" DESTINATION bin )
+  install( DIRECTORY "${URHO3D_ROOT}/share/Resources/CoreData" DESTINATION bin )
+  install( DIRECTORY "${URHO3D_ROOT}/share/Resources/Data" DESTINATION bin )
 else()
-INSTALL( DIRECTORY "${URHO3D_ROOT}/share/Urho3D/Resources/CoreData" DESTINATION bin )
-INSTALL( DIRECTORY "${URHO3D_ROOT}/share/Urho3D/Resources/Data" DESTINATION bin )
+  install( DIRECTORY "${URHO3D_ROOT}/share/Urho3D/Resources/CoreData" DESTINATION bin )
+  install( DIRECTORY "${URHO3D_ROOT}/share/Urho3D/Resources/Data" DESTINATION bin )
 endif()
 

@@ -1,0 +1,5 @@
+hunter_config(Urho3D VERSION 1.5-p0-83f254c
+  CMAKE_ARGS
+  URHO3D_LIB_TYPE=SHARED
+  #URHO3D_PACKAGING=true
+  )
