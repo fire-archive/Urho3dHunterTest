@@ -27,7 +27,7 @@ project(UrhoHunterTest)
 
 hunter_add_package(Urho3D)
 
-if(Win32)
+if(WIN32)
 set(CMAKE_MODULE_PATH ${URHO3D_ROOT}/share/CMake/Modules;${CMAKE_MODULE_PATH})
 else()
 set(CMAKE_MODULE_PATH ${URHO3D_ROOT}/share/Urho3D/CMake/Modules;${CMAKE_MODULE_PATH})
@@ -35,7 +35,7 @@ endif()
 include(Urho3D-CMake-common)
 add_subdirectory(20_HugeObjectCount)
 
-if(Win32)
+if(WIN32)
 INSTALL( DIRECTORY "${URHO3D_ROOT}/share/Resources/CoreData" DESTINATION bin )
 INSTALL( DIRECTORY "${URHO3D_ROOT}/share/Resources/Data" DESTINATION bin )
 else()
