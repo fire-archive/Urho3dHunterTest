@@ -35,6 +35,7 @@ hunter_add_package(Urho3D)
 #  "## Urho3D\n\n"
 #  "${urho3d_license_content}"
 #)
+#install(FILES ${project_license} DESTINATION .)
 
 message("Project license: ${project_license}")
 
@@ -44,15 +45,19 @@ else()
   set(CMAKE_MODULE_PATH ${URHO3D_ROOT}/share/Urho3D/CMake/Modules;${CMAKE_MODULE_PATH})
 endif()
 include(Urho3D-CMake-common)
-add_subdirectory(20_HugeObjectCount)
 
-#install(FILES ${project_license} DESTINATION .)
+if(${URHO3D_LIB_TYPE} STREQUAL SHARED AND NOT WIN32)
+ set(CMAKE_INSTALL_RPATH "../lib/Urho3D")
+ install(DIRECTORY "${URHO3D_ROOT}/lib/Urho3D" DESTINATION lib)
+endif()
 
 if(WIN32)
-  install( DIRECTORY "${URHO3D_ROOT}/share/Resources/CoreData" DESTINATION bin )
-  install( DIRECTORY "${URHO3D_ROOT}/share/Resources/Data" DESTINATION bin )
+  install(DIRECTORY "${URHO3D_ROOT}/share/Resources/CoreData" DESTINATION bin)
+  install(DIRECTORY "${URHO3D_ROOT}/share/Resources/Data" DESTINATION bin)
 else()
-  install( DIRECTORY "${URHO3D_ROOT}/share/Urho3D/Resources/CoreData" DESTINATION bin )
-  install( DIRECTORY "${URHO3D_ROOT}/share/Urho3D/Resources/Data" DESTINATION bin )
+  install(DIRECTORY "${URHO3D_ROOT}/share/Urho3D/Resources/CoreData" DESTINATION bin)
+  install(DIRECTORY "${URHO3D_ROOT}/share/Urho3D/Resources/Data" DESTINATION bin)
 endif()
+
+add_subdirectory(20_HugeObjectCount)
 
