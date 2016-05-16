@@ -22,16 +22,17 @@ if (COMMAND cmake_policy)
 endif ()
 project(UrhoHunterTest)
 hunter_add_package(Urho3D)
-#file(READ "${URHO3D_LICENSE}" urho3d_license_content)
-#set(project_license ${CMAKE_BINARY_DIR}/LICENSE.md)
-#file(
-#  WRITE
-#  "${project_license}"
-#  "## Urho3D\n\n"
-#  "${urho3d_license_content}"
-#)
-#install(FILES ${project_license} DESTINATION .)
-#message("Project license: ${project_license}")
+file(READ "${URHO3D_ROOT}/licenses/Urho3D/LICENSE" urho3d_license_content)
+file(READ "${CMAKE_SOURCE_DIR}/LICENSE.md" project_license)
+set(output_license ${CMAKE_CURRENT_BINARY_DIR}/LICENSE.md)
+file(
+  WRITE
+  "${output_license}"
+  "${project_license}\n\n"
+  "${urho3d_license_content}"
+)
+install(FILES ${output_license} DESTINATION .)
+message("Project license: ${output_license}")
 if(WIN32)
   set(CMAKE_MODULE_PATH ${URHO3D_ROOT}/share/CMake/Modules;${CMAKE_MODULE_PATH})
 else()
