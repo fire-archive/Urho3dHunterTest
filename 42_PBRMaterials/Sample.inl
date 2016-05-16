@@ -71,15 +71,16 @@ void Sample::Setup()
 
 void Sample::Start()
 {
-    if (GetPlatform() == "Android" || GetPlatform() == "iOS")
-        // On mobile platform, enable touch by adding a screen joystick
-        InitTouchInput();
-    else if (GetSubsystem<Input>()->GetNumJoysticks() == 0)
-        // On desktop platform, do not detect touch when we already got a joystick
-        SubscribeToEvent(E_TOUCHBEGIN, URHO3D_HANDLER(Sample, HandleTouchBegin));
-
-    // Create logo
-    CreateLogo();
+	if (GetPlatform() == "Android" || GetPlatform() == "iOS")
+	{
+		// On mobile platform, enable touch by adding a screen joystick
+		InitTouchInput();
+	}
+	else if (GetSubsystem<Input>()->GetNumJoysticks() == 0)
+	{
+		// On desktop platform, do not detect touch when we already got a joystick
+		SubscribeToEvent(E_TOUCHBEGIN, URHO3D_HANDLER(Sample, HandleTouchBegin));
+	}
 
     // Set custom window Title & Icon
     SetWindowTitleAndIcon();
