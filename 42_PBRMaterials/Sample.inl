@@ -71,16 +71,13 @@ void Sample::Setup()
 
 void Sample::Start()
 {
-	if (GetPlatform() == "Android" || GetPlatform() == "iOS")
-	{
-		// On mobile platform, enable touch by adding a screen joystick
-		InitTouchInput();
-	}
-	else if (GetSubsystem<Input>()->GetNumJoysticks() == 0)
-	{
-		// On desktop platform, do not detect touch when we already got a joystick
-		SubscribeToEvent(E_TOUCHBEGIN, URHO3D_HANDLER(Sample, HandleTouchBegin));
-	}
+    if (GetPlatform() == "Android" || GetPlatform() == "iOS")
+        // On mobile platform, enable touch by adding a screen joystick
+        InitTouchInput();
+    else if (GetSubsystem<Input>()->GetNumJoysticks() == 0)
+        // On desktop platform, do not detect touch when we already got a joystick
+        SubscribeToEvent(E_TOUCHBEGIN, URHO3D_HANDLER(Sample, HandleTouchBegin));
+
 
     // Set custom window Title & Icon
     SetWindowTitleAndIcon();
@@ -223,7 +220,7 @@ void Sample::HandleKeyUp(StringHash eventType, VariantMap& eventData)
     int key = eventData[P_KEY].GetInt();
 
     // Close console (if open) or exit when ESC is pressed
-    if (key == KEY_ESC)
+    if (key == KEY_ESCAPE)
     {
         Console* console = GetSubsystem<Console>();
         if (console->IsVisible())
@@ -248,8 +245,8 @@ void Sample::HandleKeyDown(StringHash eventType, VariantMap& eventData)
 
     int key = eventData[P_KEY].GetInt();
 
-    // Toggle console with F1 or Z
-    if (key == KEY_F1 || key == 'Z')
+    // Toggle console with F1
+    if (key == KEY_F1)
         GetSubsystem<Console>()->Toggle();
 
     // Toggle debug HUD with F2
