@@ -1,5 +1,7 @@
+include("Urho3D/hunter.cmake")
+
 hunter_config(Urho3D
-  VERSION 1.5-p3
+  VERSION 1.6-p0-e2bad7d
   CMAKE_ARGS
   URHO3D_LIB_TYPE=SHARED
   URHO3D_C++11=true
