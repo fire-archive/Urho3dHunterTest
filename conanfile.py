@@ -8,19 +8,10 @@ class Urho3dConan(ConanFile):
     url = "https://github.com/urho3d/Urho3D.git"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
-    default_options = "shared=False"
-    generators = "cmake"
+    default_options = "shared=True"
 
     def source(self):
         self.run("git clone %s Urho3D" % (self.url))
-        # This small hack might be useful to guarantee proper /MT /MD linkage in MSVC
-        # if the packaged project doesn't have variables to set it properly
-        tools.replace_in_file("Urho3D/CMakeLists.txt", "project (Urho3D)", '''project (Urho3D)
-        include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-        conan_basic_setup()
-        unset(CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
-        unset(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE)
-        unset(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG)''')
 
     def build(self):
         cmake = CMake(self)
@@ -73,13 +64,14 @@ class Urho3dConan(ConanFile):
         -DURHO3D_LUA=OFF \
         -DURHO3D_OPENGL=ON"
 
-        self.run('cmake Urho3D %s %s %s %s' % (cmake.command_line, shared, install, options))
-        self.run("cmake --build . --target install %s" % cmake.build_config)
+        self.run('mkdir build && cd Build && cmake ../Urho3D %s %s %s %s' % (cmake.command_line, shared, install, options))
+        self.run("cmake --build Build --target ALL_BUILD %s" % cmake.build_config)
+        self.run("cmake --build Build --target install %s" % cmake.build_config)
 
     def package(self):
         self.copy("*.h", dst="include", src="Urho3D")
-#        self.copy("*hello.lib", dst="lib", keep_path=False)
-        self.copy("*.dll", dst="bin", keep_path=False)
+        self.copy("*.lib", dst="lib", keep_path=False)
+        self.copy("*", dst="bin", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)
         self.copy("*.a", dst="lib", keep_path=False)
 
