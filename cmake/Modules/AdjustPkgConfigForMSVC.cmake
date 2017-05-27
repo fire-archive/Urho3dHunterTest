@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008-2016 the Urho3D project.
+# Copyright (c) 2008-2017 the Urho3D project.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
- 
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
-include(UrhoCommon)
+# VS generator is multi-config, we need to use the CMake generator expression to get the correct target linker filename during post build step
 
-# Emscripten build does not copy the PBR resources, and would not support the shaders
-if (EMSCRIPTEN)
-    return ()
-endif ()
-
-# Define target name
-set (TARGET_NAME 42_PBRMaterials)
-
-# Define source files
-define_source_files (EXTRA_H_FILES ${COMMON_SAMPLE_H_FILES})
-
-# Setup target with resource copying
-setup_main_executable ()
-
-# Setup test cases
-setup_test ()
+configure_file (Urho3D.pc.msvc Urho3D.pc @ONLY)

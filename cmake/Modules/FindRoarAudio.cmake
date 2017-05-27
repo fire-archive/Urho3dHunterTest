@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008-2016 the Urho3D project.
+# Copyright (c) 2008-2017 the Urho3D project.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +20,17 @@
 # THE SOFTWARE.
 #
 
-# Emscripten build does not copy the PBR resources, and would not support the shaders
-if (EMSCRIPTEN)
-    return ()
-endif ()
+# Find RoarAudio development library
+#
+#  SNDIO_FOUND
+#  SNDIO_INCLUDE_DIRS
+#  SNDIO_LIBRARIES
+#
 
-# Define target name
-set (TARGET_NAME 42_PBRMaterials)
+find_path (SNDIO_INCLUDE_DIRS NAMES RoarAudio.h DOC "RoarAudio include directory")
+find_library (SNDIO_LIBRARIES NAMES RoarAudio DOC "RoarAudio library")
 
-# Define source files
-define_source_files (EXTRA_H_FILES ${COMMON_SAMPLE_H_FILES})
+include (FindPackageHandleStandardArgs)
+find_package_handle_standard_args (RoarAudio REQUIRED_VARS SNDIO_LIBRARIES SNDIO_INCLUDE_DIRS FAIL_MESSAGE "Could NOT find RoarAudio development library")
 
-# Setup target with resource copying
-setup_main_executable ()
-
-# Setup test cases
-setup_test ()
+mark_as_advanced (SNDIO_INCLUDE_DIRS SNDIO_LIBRARIES)

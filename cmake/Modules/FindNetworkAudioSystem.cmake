@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008-2016 the Urho3D project.
+# Copyright (c) 2008-2017 the Urho3D project.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
- 
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
-include(UrhoCommon)
+# Find NetworkAudioSystem development library
+#
+#  NAS_FOUND
+#  NAS_INCLUDE_DIRS
+#  NAS_LIBRARIES
+#
 
-# Emscripten build does not copy the PBR resources, and would not support the shaders
-if (EMSCRIPTEN)
-    return ()
-endif ()
+find_path (NAS_INCLUDE_DIRS NAMES audio/audiolib.h nas/audiolib.h DOC "NetworkAudioSystem include directory")
+find_library (NAS_LIBRARIES NAMES audio DOC "NetworkAudioSystem library")
 
-# Define target name
-set (TARGET_NAME 42_PBRMaterials)
+include (FindPackageHandleStandardArgs)
+find_package_handle_standard_args (NAS REQUIRED_VARS NAS_LIBRARIES NAS_INCLUDE_DIRS FAIL_MESSAGE "Could NOT find NetworkAudioSystem development library")
 
-# Define source files
-define_source_files (EXTRA_H_FILES ${COMMON_SAMPLE_H_FILES})
-
-# Setup target with resource copying
-setup_main_executable ()
-
-# Setup test cases
-setup_test ()
+mark_as_advanced (NAS_INCLUDE_DIRS NAS_LIBRARIES)

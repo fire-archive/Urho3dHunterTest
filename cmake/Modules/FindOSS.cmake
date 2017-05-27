@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008-2016 the Urho3D project.
+# Copyright (c) 2008-2017 the Urho3D project.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
- 
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
-include(UrhoCommon)
+# Find Open Sound System development library
+#
+#  OSS_FOUND
+#  OSS_INCLUDE_DIRS
+#  OSS_LIBRARIES
+#  OSS_USE_WORKAROUND_HEADER
+#
 
-# Emscripten build does not copy the PBR resources, and would not support the shaders
-if (EMSCRIPTEN)
-    return ()
-endif ()
+find_path (OSS_INCLUDE_DIRS NAMES sys/soundcard.h soundcard.h PATH_SUFFIXES uClibc DOC "OSS include directory")
+find_library (OSS_LIBRARIES NAMES OSSlib ossaudio DOC "OSS library")
+find_file (OSS_USE_WORKAROUND_HEADER NAMES soundcard.h DOC "OSS use workaround header")
 
-# Define target name
-set (TARGET_NAME 42_PBRMaterials)
+include (FindPackageHandleStandardArgs)
+find_package_handle_standard_args (OSS REQUIRED_VARS OSS_INCLUDE_DIRS FAIL_MESSAGE "Could NOT find OSS development library")
 
-# Define source files
-define_source_files (EXTRA_H_FILES ${COMMON_SAMPLE_H_FILES})
-
-# Setup target with resource copying
-setup_main_executable ()
-
-# Setup test cases
-setup_test ()
+mark_as_advanced (OSS_INCLUDE_DIRS OSS_LIBRARIES OSS_USE_WORKAROUND_HEADER)

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008-2016 the Urho3D project.
+# Copyright (c) 2008-2017 the Urho3D project.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
- 
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
-include(UrhoCommon)
+# Find Mir display server
+#
+#  MIR_FOUND
+#  MIR_INCLUDE_DIRS
+#  MIR_CLIENT
+#  MIR_COMMON
+#  EGL
+#  XKB
+#
 
-# Emscripten build does not copy the PBR resources, and would not support the shaders
-if (EMSCRIPTEN)
-    return ()
+find_path (MIR_CLIENT_INCLUDE_DIR NAMES mir_toolkit/mir_client_library.h PATH_SUFFIXES mirclient DOC "Mir client include directory")
+find_path (MIR_COMMON_INCLUDE_DIR NAMES mir_toolkit/common.h PATH_SUFFIXES mircommon DOC "Mir common include directory")
+find_library (MIR_CLIENT NAMES mirclient DOC "Mir client library")
+find_library (MIR_COMMON NAMES mircommon DOC "Mir common library")
+find_library (EGL NAMES EGL DOC "EGL library")
+find_library (XKB NAMES xkbcommon DOC "Xkb common library")
+
+include (FindPackageHandleStandardArgs)
+find_package_handle_standard_args (Mir REQUIRED_VARS MIR_CLIENT MIR_COMMON EGL XKB MIR_CLIENT_INCLUDE_DIR MIR_COMMON_INCLUDE_DIR FAIL_MESSAGE "Could NOT find Mir display server")
+if (MIR_FOUND)
+    set (MIR_INCLUDE_DIRS ${MIR_CLIENT_INCLUDE_DIR} ${MIR_COMMON_INCLUDE_DIR})
 endif ()
 
-# Define target name
-set (TARGET_NAME 42_PBRMaterials)
-
-# Define source files
-define_source_files (EXTRA_H_FILES ${COMMON_SAMPLE_H_FILES})
-
-# Setup target with resource copying
-setup_main_executable ()
-
-# Setup test cases
-setup_test ()
+mark_as_advanced (MIR_CLIENT_INCLUDE_DIR MIR_COMMON_INCLUDE_DIR MIR_CLIENT MIR_COMMON EGL XKB)

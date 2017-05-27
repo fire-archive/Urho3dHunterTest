@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008-2016 the Urho3D project.
+# Copyright (c) 2008-2017 the Urho3D project.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
- 
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
-include(UrhoCommon)
+# Find Esound development library
+#
+#  ESOUND_FOUND
+#  ESOUND_INCLUDE_DIRS
+#  ESOUND_LIBRARIES
+#
 
-# Emscripten build does not copy the PBR resources, and would not support the shaders
-if (EMSCRIPTEN)
-    return ()
-endif ()
+find_path (ESOUND_INCLUDE_DIRS NAMES esd.h DOC "Esound include directory")
+find_library (ESOUND_LIBRARIES NAMES esd DOC "Esound library")
 
-# Define target name
-set (TARGET_NAME 42_PBRMaterials)
+include (FindPackageHandleStandardArgs)
+find_package_handle_standard_args (Esound REQUIRED_VARS ESOUND_LIBRARIES ESOUND_INCLUDE_DIRS FAIL_MESSAGE "Could NOT find Esound development library")
 
-# Define source files
-define_source_files (EXTRA_H_FILES ${COMMON_SAMPLE_H_FILES})
-
-# Setup target with resource copying
-setup_main_executable ()
-
-# Setup test cases
-setup_test ()
+mark_as_advanced (ESOUND_INCLUDE_DIRS ESOUND_LIBRARIES)
